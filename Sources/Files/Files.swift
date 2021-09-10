@@ -4,12 +4,12 @@ public class Files {
     private static let manager = FileManager.default
     private static let url = URL.directory
     
-    static func read(_ file: String, completion: @escaping (Data?)->Void) {
+    public static func read(_ file: String, completion: @escaping (Data?)->Void) {
         let path = url.appendingPathComponent(file)
         completion(try? Data(contentsOf: path))
     }
     
-    static func write(_ file: String, _ data: Data?, completion: @escaping (Bool)->Void) {
+    public static func write(_ file: String, _ data: Data?, completion: @escaping (Bool)->Void) {
         let path = url.appendingPathComponent(file)
         guard let data = data else {
             completion(false)
@@ -22,7 +22,7 @@ public class Files {
         completion(true)
     }
     
-    static func folder(_ folder: String, completion: @escaping (Bool)->Void) {
+    public static func folder(_ folder: String, completion: @escaping (Bool)->Void) {
         let path = url.appendingPathComponent(folder)
         if !manager.fileExists(atPath: path.path) {
             guard let _ = try? manager.createDirectory(atPath: path.path, withIntermediateDirectories: true, attributes: nil) else {
@@ -33,7 +33,7 @@ public class Files {
         } else { completion(false) }
     }
     
-    static func files(_ folder: String = "", completion: @escaping (Array<String>?)->Void) {
+    public static func files(_ folder: String = "", completion: @escaping (Array<String>?)->Void) {
         let path = url.appendingPathComponent(folder)
         
         guard let values = try? manager.contentsOfDirectory(atPath: path.path) else {
@@ -43,7 +43,7 @@ public class Files {
         completion(values)
     }
     
-    static func remove(_ path: String = "", completion: @escaping (Bool)->Void) {
+    public static func remove(_ path: String = "", completion: @escaping (Bool)->Void) {
         if path != "" {
             let path = url.appendingPathComponent(path)
             do {
