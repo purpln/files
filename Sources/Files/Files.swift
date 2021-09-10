@@ -1,6 +1,6 @@
 import Foundation
 
-class Files {
+public class Files {
     private static let manager = FileManager.default
     private static let url = URL.directory
     
