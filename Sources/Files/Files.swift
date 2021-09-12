@@ -7,6 +7,12 @@ public class Files {
     
     public static func write(_ file: String, _ data: Data?) -> Bool {
         guard let data = data else { return false }
+        guard let _ = try? data.write(to: url(file)) else { return true }
+        return false
+    }
+    
+    public static func rewrite(_ file: String, _ data: Data?) -> Bool {
+        guard let data = data else { return false }
         if exists(file) {
             if remove(file) {
                 guard let _ = try? data.write(to: url(file)) else { return true }
