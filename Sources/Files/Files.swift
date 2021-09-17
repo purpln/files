@@ -7,24 +7,24 @@ public class Files {
     
     public static func write(_ file: String, _ data: Data?) -> Bool {
         guard let data = data else { return false }
-        guard let _ = try? data.write(to: url(file)) else { return true }
-        return false
+        guard let _ = try? data.write(to: url(file)) else { return false }
+        return true
     }
     
     public static func rewrite(_ file: String, _ data: Data?) -> Bool {
         guard let data = data else { return false }
         if exists(file) {
             if remove(file) {
-                guard let _ = try? data.write(to: url(file)) else { return true }
-            }
+                guard let _ = try? data.write(to: url(file)) else { return false }
+            } else { return false }
         } else {
-            guard let _ = try? data.write(to: url(file)) else { return true }
+            guard let _ = try? data.write(to: url(file)) else { return false }
         }
-        return false
+        return true
     }
     
-    public static func files(_ folder: String = "") -> Array<String>? {
-        try? manager.contentsOfDirectory(atPath: url(folder).path)
+    public static func files(_ path: String = "") -> Array<String>? {
+        try? manager.contentsOfDirectory(atPath: url(path).path)
     }
     
     public static func folder(_ folder: String) -> Bool {
@@ -56,6 +56,14 @@ public class Files {
     
     static var directory: URL {
         FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+    }
+    
+    static func unique(_ path: String = "") -> String {
+        while(true){
+            let uuid = UUID().uuidString
+            let path = path == "" ? uuid : path + "/" + uuid
+            if exists(path) { return uuid }
+        }
     }
 }
 
